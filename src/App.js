@@ -6,33 +6,41 @@ class App extends Component {
 
   state = {
     persons: [
-      {name: "Max", age: 28},
-      {name: "Manu", age: 29},
-      {name: "Stephanie", age: 26}
+      {id:'1', name: "Max", age: 28},
+      {id:'2', name: "Manu", age: 29},
+      {id:'3', name: "Stephanie", age: 26}
     ],
     otherState: 'some other value',
     showPersons: false
   }
 
-  switchNameHandler = (newName) =>{
-    this.setState({
-      persons: [
-        {name: newName, age: 28},
-        {name: "Manu", age: 29},
-        {name: "Stephanie", age: 27}
-      ]
-    })
+
+  nameChangedHandler = (event, id) =>{
+
+    const personIndex = this.state.persons.findIndex(p =>{ //.findIndex takes in a function and will execute the function on every elemt in the array
+      return p.id === id; //return t or f on whether or not this is the person/element you were looking for
+                          // it will be true if the element that you are currently looking at (p) is equal to the argument (id) that you received
+    });
+    
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState({persons: persons});
   }
 
-  nameChangedHandler = (event) =>{
-    this.setState({
-      persons: [
-        {name: 'Max', age: 28},
-        {name: event.target.value, age: 29},
-        {name: "Stephanie", age: 27}
-      ]
-    })
+  deletePersonHandler = (personIndex) =>{
+    // const persons = this.state.persons.slice(); //get a copy of the full array using slice and copy it into the new const
+    const persons = [...this.state.persons]; // <-- this is an equivelent to the slice approach abouve
+    persons.splice(personIndex, 1); //start splicing the personIndex remove one element from the array
+    this.setState({persons: persons}); //setting state to updated persons
   }
+
   togglePersonsHandler = () =>{
     const doesShow= this.state.showPersons;
     this.setState({
@@ -56,18 +64,16 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
             <div>
-                <Person 
-                name={this.state.persons[0].name} 
-                age={this.state.persons[0].age}/>
-                <Person 
-                name={this.state.persons[1].name} 
-                age={this.state.persons[1].age}
-                changed = {this.nameChangedHandler}
-                click={this.switchNameHandler.bind(this, 'Max!')}>Hobbies: racing</Person>      
-                <Person 
-                name={this.state.persons[2].name} 
-                age={this.state.persons[2].age}/>
-            </div> //putting entire div in persons variable. it's a way to check if showPersons is true before returning. conditional rendering
+              {this.state.persons.map((person, index) => {
+                return <Person  //you should return what you want to map the persons item into. map returns a new array
+                click ={() => this.deletePersonHandler(index)} //index is an argument you can pass in to the map function to specify which array item you are targeting
+                name={person.name} 
+                age={person.age}
+                key={person.id}//each element needs a unique key
+                changed={(event) => this.nameChangedHandler(event, person.id)}
+                /> 
+              })}
+            </div> 
       ); 
     }
     return (
