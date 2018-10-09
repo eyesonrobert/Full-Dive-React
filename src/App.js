@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.css';
 import Person from './Person/Person';
+import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
 
 class App extends Component {
 
@@ -66,30 +67,30 @@ class App extends Component {
       persons = (
             <div>
               {this.state.persons.map((person, index) => {
-                return <Person  //you should return what you want to map the persons item into. map returns a new array
+                return <ErrorBoundary key={person.id}>
+                  <Person  //you should return what you want to map the persons item into. map returns a new array
                 click ={() => this.deletePersonHandler(index)} //index is an argument you can pass in to the map function to specify which array item you are targeting
                 name={person.name} 
                 age={person.age}
-                key={person.id}//each element needs a unique key
                 changed={(event) => this.nameChangedHandler(event, person.id)}
-                /> 
+                /> </ErrorBoundary>
               })}
             </div> 
       ); 
       style.backgroundColor='red';
   }
-    const classes =[];
+    const assignedClasses =[];
     if (this.state.persons.length <= 2){
-      classes.push('red'); //red class is in app.css so it  would be classes = ['red']
+      assignedClasses.push(classes.red); //red class is in app.css so it  would be classes = ['red']
     }
     if (this.state.persons.length <= 1){
-      classes.push('bold'); //bold class is in app. css so it would be classes =['red, bold'] since we joined it at the className below
+      assignedClasses.push(classes.bold); //bold class is in app. css so it would be classes =['red, bold'] since we joined it at the className below
     }
 
     return (
-      <div className="App">
+      <div className='App'>
         <h1>This is a Title</h1>
-        <p className={classes.join(' ')}>This is really working</p>
+        <p className={assignedClasses.join(' ')}>This is really working</p>
         <button
         style={style}
         onClick={this.togglePersonsHandler}>Toggle Persons</button>    
