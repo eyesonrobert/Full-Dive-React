@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './cockpit.css';
+import Aux from './Aux';
 
 const cockpit = (props) => {
     const assignedClasses =[];
@@ -11,13 +12,16 @@ const cockpit = (props) => {
     }
 
     return(
-        <div className={classes.cockpit}>
+        <Aux>
+        <div
+        className={classes.cockpit}>
             <h1>This is a Title</h1>
             <p className={assignedClasses.join(' ')}>This is really working</p>
             <button
             style={style}
             onClick={this.togglePersonsHandler}>Toggle Persons</button>  
         </div>  
+        </Aux>
     );
 };
 

@@ -8,9 +8,6 @@ class App extends Component {
     console.log('these are the props', props)
 }
 
-componentWillMount(){
-  console.log('component will mount');
-}
   state = {
     persons: [
       {id:'1', name: "Max", age: 28},
