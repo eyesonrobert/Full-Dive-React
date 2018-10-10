@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import Person from './Person/Person';
-import ErrorBoundary from './ErrorBoundary/ErrorBoundary';
+import Persons from '../Components/Persons/Persons';
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    console.log('these are the props', props)
+}
 
+componentWillMount(){
+  console.log('component will mount');
+}
   state = {
     persons: [
       {id:'1', name: "Max", age: 28},
@@ -66,15 +72,10 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
             <div>
-              {this.state.persons.map((person, index) => {
-                return <ErrorBoundary key={person.id}>
-                  <Person  //you should return what you want to map the persons item into. map returns a new array
-                click ={() => this.deletePersonHandler(index)} //index is an argument you can pass in to the map function to specify which array item you are targeting
-                name={person.name} 
-                age={person.age}
-                changed={(event) => this.nameChangedHandler(event, person.id)}
-                /> </ErrorBoundary>
-              })}
+              <Persons 
+                persons = {this.state.persons}
+                clicked={this.deletePersonHandler}
+                changed={this.nameChangedHandler}/>
             </div> 
       ); 
       style.backgroundColor='red';
